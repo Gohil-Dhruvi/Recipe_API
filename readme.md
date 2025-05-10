@@ -120,6 +120,7 @@ User:-
    Post :- http://localhost:8009/auth/reset-password/681ee4d78f08b78a702ccfb8
    Put :- http://localhost:8009/auth/profile
    Get :- http://localhost:8009/auth/admin/users
+   Delete :- http://localhost:8009/auth/admin/users/681ee4d78f08b78a702ccfb8
 
 Recipe :-
    Get:- http://localhost:8009/recipes/
@@ -127,9 +128,9 @@ Recipe :-
    Get :- http://localhost:8009/recipes/my/allrecipes
    Get :- http://localhost:8009/recipes/681f0706acc4cf5a918c1065
    Put :- http://localhost:8009/recipes/681f0706acc4cf5a918c1065
-   Delet :- http://localhost:8009/recipes/681f0706acc4cf5a918c1065
+   Delete :- http://localhost:8009/recipes/681f0706acc4cf5a918c1065
 
 Comments :-
    Get :- http://localhost:8009/comments/681f069cacc4cf5a918c1062
    Post :- http://localhost:8009/comments/681f069cacc4cf5a918c1062
-   Get :- http://localhost:8009/comments/681f069cacc4cf5a918c1062
+   Delete :- http://localhost:8009/comments/681f0b7cd0342e0e1d76b7af
