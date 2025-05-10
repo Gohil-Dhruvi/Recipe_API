@@ -114,6 +114,7 @@ Recipe Sharing Platform Project Outline with JWT, Cookie, Role-Based Access, Mul
 User:- 
    post :- http://localhost:8009/auth/register
    Post :- http://localhost:8009/auth/login
+   Post :- http://localhost:8009/auth/logout
    Get :- http://localhost:8009/auth/profile
    Post :- http://localhost:8009/auth/forgot-password
    Post :- http://localhost:8009/auth/change-password
@@ -121,6 +122,7 @@ User:-
    Put :- http://localhost:8009/auth/profile
    Get :- http://localhost:8009/auth/admin/users
    Delete :- http://localhost:8009/auth/admin/users/681ee4d78f08b78a702ccfb8
+   Post :- http://localhost:8009/auth/upload-profile-picture
 
 Recipe :-
    Get:- http://localhost:8009/recipes/
