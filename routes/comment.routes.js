@@ -16,4 +16,9 @@ router.post('/:recipeId', verifyUserToken, addComment);
 //  delete a comment (author or admin)
 router.delete('/:commentId', verifyUserToken, deleteComment);
 
+router.put('/:commentId', verifyUserToken, updateComment);
+
+// Paginate comments
+router.get('/:recipeId/page/:pageNum', paginateComments);
+
 module.exports = router;

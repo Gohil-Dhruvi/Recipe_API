@@ -89,3 +89,109 @@ exports.deleteRecipe = async (req, res) => {
     res.status(500).json({ message: 'Error deleting recipe', error: err.message });
   }
 };
+
+// Search
+
+exports.searchRecipes = async (req, res) => {
+  try {
+    // parse & default
+    const page  = parseInt(req.query.page)  || 1;
+    const limit = parseInt(req.query.limit) || 10;
+    const { q, tag } = req.query;
+
+    // build filter
+    const filter = {};
+    if (q)   filter.title = { $regex: q, $options: 'i' };
+    if (tag) filter.tags  = tag;
+
+    // execute query
+    const skip = (page - 1) * limit;
+    const recipes = await Recipe.find(filter)
+      .skip(skip)
+      .limit(limit)
+      .populate('author', 'username');
+
+    res.json({
+      page,
+      limit,
+      count: recipes.length,
+      recipes
+    });
+  } catch (err) {
+    res.status(500).json({ message: 'Error searching recipes', error: err.message });
+  }
+};
+
+
+// Get by tag
+exports.getByTag = async (req, res) => {
+  try {
+    const recipes = await Recipe.find({ tags: req.params.tagName }).populate('author', 'username');
+    res.json(recipes);
+  } catch (err) {
+    res.status(500).json({ message: 'Error fetching by tag', error: err.message });
+  }
+};
+
+// Get by category
+exports.getByCategory = async (req, res) => {
+  try {
+    const recipes = await Recipe.find({ category: req.params.categoryName }).populate('author', 'username');
+    res.json(recipes);
+  } catch (err) {
+    res.status(500).json({ message: 'Error fetching by category', error: err.message });
+  }
+};
+
+// Like
+exports.likeRecipe = async (req, res) => {
+  try {
+    await Recipe.findByIdAndUpdate(req.params.id, { $addToSet: { likes: req.user._id } });
+    res.json({ message: 'Recipe liked' });
+  } catch (err) {
+    res.status(500).json({ message: 'Error liking recipe', error: err.message });
+  }
+};
+
+// Unlike
+exports.unlikeRecipe = async (req, res) => {
+  try {
+    await Recipe.findByIdAndUpdate(req.params.id, { $pull: { likes: req.user._id } });
+    res.json({ message: 'Recipe unliked' });
+  } catch (err) {
+    res.status(500).json({ message: 'Error unliking recipe', error: err.message });
+  }
+};
+
+// Recent
+exports.getRecent = async (req, res) => {
+  try {
+    const recipes = await Recipe.find().sort({ createdAt: -1 }).limit(10).populate('author','username');
+    res.json(recipes);
+  } catch (err) {
+    res.status(500).json({ message: 'Error fetching recent', error: err.message });
+  }
+};
+
+// Popular
+exports.getPopular = async (req, res) => {
+  try {
+    const recipes = await Recipe.find()
+      .sort({ 'likes.length': -1 })
+      .limit(10)
+      .populate('author','username');
+    res.json(recipes);
+  } catch (err) {
+    res.status(500).json({ message: 'Error fetching popular', error: err.message });
+  }
+};
+
+// Comment count
+exports.getCommentCount = async (req, res) => {
+  try {
+    const count = await Comment.countDocuments({ recipe: req.params.id });
+    res.json({ count });
+  } catch (err) {
+    res.status(500).json({ message: 'Error fetching comment count', error: err.message });
+  }
+};
